@@ -3,9 +3,13 @@ import dbConnect from "@/lib/mongodb";
 import Notice from "@/models/Notice";
 import { Types } from "mongoose";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+// 🔍 Get a single notice by ID
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   await dbConnect();
-  const { id } = params;
+  const { id } = context.params;
 
   if (!Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
@@ -19,9 +23,13 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   return NextResponse.json(notice);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+// ✏️ Update a notice by ID
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   await dbConnect();
-  const { id } = params;
+  const { id } = context.params;
   const body = await req.json();
 
   if (!Types.ObjectId.isValid(id)) {
@@ -34,12 +42,20 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     { new: true }
   );
 
+  if (!updated) {
+    return NextResponse.json({ error: "Notice not found" }, { status: 404 });
+  }
+
   return NextResponse.json(updated);
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+// ❌ Delete a notice by ID
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   await dbConnect();
-  const { id } = params;
+  const { id } = context.params;
 
   if (!Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
