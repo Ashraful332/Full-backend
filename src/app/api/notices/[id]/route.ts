@@ -3,15 +3,11 @@ import dbConnect from "@/lib/mongodb";
 import Notice from "@/models/Notice";
 import { Types } from "mongoose";
 
-// ✅ এইটা নতুন করে লিখো
-type Params = {
-  params: {
-    id: string;
-  };
-};
-
 // 🔍 Get a single notice by ID
-export async function GET(req: NextRequest, { params }: Params) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await dbConnect();
   const { id } = params;
 
@@ -28,7 +24,10 @@ export async function GET(req: NextRequest, { params }: Params) {
 }
 
 // ✏️ Update a notice by ID
-export async function PUT(req: NextRequest, { params }: Params) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await dbConnect();
   const { id } = params;
   const body = await req.json();
@@ -51,7 +50,10 @@ export async function PUT(req: NextRequest, { params }: Params) {
 }
 
 // ❌ Delete a notice by ID
-export async function DELETE(req: NextRequest, { params }: Params) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await dbConnect();
   const { id } = params;
 
@@ -70,7 +72,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
 
 
 
-// import { NextRequest, NextResponse } from "next/server";
+// import { NextRequest, NextResponse,  } from "next/server";
 // import dbConnect from "@/lib/mongodb";
 // import Notice from "@/models/Notice";
 // import { Types } from "mongoose";
